@@ -17,6 +17,8 @@ namespace next_api.Entities
 
         public ICollection<Player>? Players { get; set; } = new List<Player>();
 
+        public string? Player_ID { get; set; }
+
         [Required]
         public required string Name { get; set; }
 

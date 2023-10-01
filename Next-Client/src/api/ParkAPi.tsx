@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { Game } from '../pages/ParkResult/types';
 
 const BASE_URL = "https://localhost:7151/api/park";
 
@@ -34,3 +33,4 @@ export const startGame = async (body: any) => {
     const response = await axios.post(`https://localhost:7151/api/park/startGame`, game);
     return response.data;
 }
+

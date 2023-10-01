@@ -13,7 +13,7 @@ namespace next_api.Servies
         private readonly IMapper _mapper;
 
 
-        public ParkService(NextApiContext nextApiContext, IMapper mapper, INextApiRepository nextApiRepository)
+        public ParkService(IMapper mapper, INextApiRepository nextApiRepository)
         {
             _nextApiRepository = nextApiRepository;
             _mapper = mapper;
@@ -25,15 +25,28 @@ namespace next_api.Servies
             return await _nextApiRepository.GetGameDocInfo();
         }
 
-        public async Task<IEnumerable<Game>> GetGames(string place_id)
+        public async Task<IEnumerable<GameDto>> GetGames(string place_id)
         {
             var games = await _nextApiRepository.GetGames(place_id);
 
             if (games == null)
             {
-                return Enumerable.Empty<Game>();
+                return Enumerable.Empty<GameDto>();
             }
-            return games;
+
+            List<GameDto> gamesDto = new List<GameDto>();
+
+            foreach (var game in games)
+            {
+                var game_master = await _nextApiRepository.GetPlayerAsync(game.Player_ID);
+                var gameDto = _mapper.Map<GameDto>(game);
+                if(game_master != null)
+                {
+                    gameDto.Game_Master = game_master.Name;
+                }
+                gamesDto.Add(gameDto);
+            }
+            return gamesDto;
         }
 
         public async Task<GameDto?> GetGame(string gameID)

@@ -18,6 +18,8 @@
 
         public bool? Active { get; set; }
 
+        public string? Game_Master { get; set; }
+
 
     }
 }

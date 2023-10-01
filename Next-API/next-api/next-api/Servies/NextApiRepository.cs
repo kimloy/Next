@@ -20,9 +20,9 @@ namespace next_api.Servies
 
         //Player actions
 
-        public async Task<Player?> GetPlayerAsync(string playerID)
+        public async Task<Player?> GetPlayerAsync(string player_ID)
         {
-            return await _context.Player.Where(p => p.Player_ID == playerID).FirstOrDefaultAsync();
+            return await _context.Player.Where(p => p.Player_ID == player_ID).FirstOrDefaultAsync();
         }
 
         public async Task<bool> PlayerExist(string playerId)

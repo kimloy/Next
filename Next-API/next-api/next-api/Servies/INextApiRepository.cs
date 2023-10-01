@@ -23,6 +23,10 @@ namespace next_api.Servies
 
         Task CreateNewGameAsync(Game game, Park park);
 
+        Task<Player?> GetPlayerAsync(string player_ID);
+
+        Task<bool> PlayerExist(string player_ID);
+
         Task<bool> SaveChangesAsync();
 
     }

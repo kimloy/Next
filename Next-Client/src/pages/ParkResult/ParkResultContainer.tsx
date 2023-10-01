@@ -43,6 +43,7 @@ import NewGameModal from "../../components/NewGameModal";
 import { getGames, startGame } from "../../api/ParkAPi";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Game } from "./types";
+import { getPlayer } from "../../api/PlayerAPI";
 
 const ParkResultContainer: React.FC = () => {
     const [parkDetail, setParkDetail] = useState<any>(null);
@@ -54,10 +55,21 @@ const ParkResultContainer: React.FC = () => {
 
     const queryClient = useQueryClient()
 
-    const { isLoading, isError, isSuccess, data } = useQuery<Game[]>(["GetGames", parkDetail], async () => {
+    const {
+        isLoading: game_Loading,
+        isError: game_Error,
+        isSuccess: game_Success,
+        data: game_data
+    } = useQuery<Game[]>(["GetGames", parkDetail], async () => {
 
         if (parkDetail && parkDetail.result.place_Id) {
             return await getGames(parkDetail.result.place_Id)
+        }
+    })
+
+    const { isLoading, isError, isSuccess, data } = useQuery(["GetPlayer"], async () => {
+        if (game_data) {
+            return await getPlayer("1");
         }
     })
 
@@ -72,6 +84,8 @@ const ParkResultContainer: React.FC = () => {
             getParkDetails(id, setParkDetail);
         }
     }, [id]);
+
+    console.log({ game_data })
 
     useEffect(() => {
         if (parkDetail != null) {
@@ -118,7 +132,7 @@ const ParkResultContainer: React.FC = () => {
         )
     }
 
-    console.log({ data })
+    console.log({ game_data })
 
     return (
         <>
@@ -136,7 +150,7 @@ const ParkResultContainer: React.FC = () => {
                     </IonToolbar>
                 </IonHeader>
                 <IonContent fullscreen >
-                    {parkDetail && parkDetail.result && isSuccess && (
+                    {parkDetail && parkDetail.result && game_Success && (
                         <div>
                             <IonGrid>
                                 <IonRow>
@@ -154,7 +168,7 @@ const ParkResultContainer: React.FC = () => {
 
                                 <IonRow>
                                     <IonCol>
-                                        {data.map((game: Game, index: number) => {
+                                        {game_data.map((game: Game, index: number) => {
                                             if (ActiveOrQueue === "Active" && game.active === true) {
                                                 return (
                                                     renderGame(game, index)

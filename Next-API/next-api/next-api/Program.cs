@@ -17,8 +17,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IPlaceService, PlacesService>();
 builder.Services.AddScoped<IParkService, ParkService>();
-
 builder.Services.AddScoped<INextApiRepository, NextApiRepository>();
+builder.Services.AddScoped<IPlayersService, PlayersService>();
 
 
 builder.Services.AddDbContext<NextApiContext>(

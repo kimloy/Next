@@ -7,7 +7,7 @@ namespace next_api.Servies
     {
         Task<GameDocInfo?> GetGameDocInfo();
 
-        Task<IEnumerable<Game>> GetGames(string place_id);
+        Task<IEnumerable<GameDto>> GetGames(string place_id);
 
         Task<GameDto?> GetGame(string gameID);
 
