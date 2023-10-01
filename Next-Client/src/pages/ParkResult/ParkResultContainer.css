@@ -1,0 +1,8 @@
+.ion-item {
+    background-color: rgb(219, 14, 14);
+}
+
+.gameList {
+    --ion-item-background: #93a2fee8;
+    color: white
+}
