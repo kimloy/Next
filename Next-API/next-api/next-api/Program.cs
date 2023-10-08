@@ -9,8 +9,12 @@ using Microsoft.EntityFrameworkCore;
 using next_api.DbContexts;
 using next_api.Servies;
 using System.Reflection;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
+
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
 
 
 // Add services to the container.
@@ -38,7 +42,8 @@ builder.Services.AddAuthentication("token")
                    options.Authority = "https://localhost:5001/";
                    options.Audience = "nextapi";
 
-                   options.MapInboundClaims = false;
+                   options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
+
                });
 
 builder.Services.AddAuthorization(options =>
@@ -78,12 +83,5 @@ app.UseBff();
 app.UseAuthorization();
 
 app.MapControllers();
-
-    // login, logout, user, backchannel logout...
-app.MapBffManagementEndpoints();
-    // reverse proxy configuration
-app.MapRemoteBffApiEndpoint("/api", "https://localhost:8100").AllowAnonymous();
-
-
 
 app.Run();

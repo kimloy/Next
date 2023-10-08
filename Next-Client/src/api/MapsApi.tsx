@@ -2,7 +2,7 @@ import axios from 'axios';
 
 
 export const getNearbyParks = async (lat: number, lng: number, setPlaygroundList: React.Dispatch<React.SetStateAction<google.maps.places.PlaceResult[]>>) => {
-    await axios.get(`https://localhost:7151/api/places/nearby/${lat}/${lng}`, {
+    await axios.get(`https://localhost:7247/api/places/nearby/${lat}/${lng}`, {
         withCredentials: true, headers: {
             'X-CSRF': '1'
         }
@@ -14,7 +14,7 @@ export const getNearbyParks = async (lat: number, lng: number, setPlaygroundList
 }
 
 export const getParkDetails = async (place_id: string, setParkDetail: React.Dispatch<any>) => {
-    await axios.get(`https://localhost:7151/api/places/detail/${place_id}`).then((resp) => {
+    await axios.get(`https://localhost:7247/api/places/detail/${place_id}`).then((resp) => {
         if (resp.data.result) {
             setParkDetail(resp.data);
         }

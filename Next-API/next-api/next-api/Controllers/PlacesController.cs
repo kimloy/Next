@@ -7,6 +7,7 @@ namespace next_api.Controllers
 
     [ApiController]
     [Route("api/places")]
+    [Authorize(Policy = "fullaccess")]
     public class PlacesController:ControllerBase
     {
         private static readonly HttpClient Client = new HttpClient();

@@ -10,6 +10,8 @@ public static class Config
         {
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
+            new IdentityResource("nextRole",
+                new [] { JwtClaimTypes.Role })
         };
 
     public static IEnumerable<ApiResource> ApiResources =>
@@ -18,7 +20,6 @@ public static class Config
             new ApiResource("nextapi")
             {
                 Scopes = { "nextapi_fullaccess"},
-                ApiSecrets = { new Secret("259439594-238128".Sha256()) },
             }
        };
 
@@ -27,7 +28,7 @@ public static class Config
         {
             new ApiScope("nextapi_fullaccess")
             {
-                UserClaims = new[] { "email", JwtClaimTypes.Role }
+                UserClaims = new[] { JwtClaimTypes.Email, JwtClaimTypes.Role }
             },
         };
 
@@ -59,7 +60,7 @@ public static class Config
                 PostLogoutRedirectUris = { "https://localhost:7247/signout-callback-oidc" },
 
                 AllowOfflineAccess = true,
-                AllowedScopes = { "openid", "profile", "nextapi_fullaccess" }
+                AllowedScopes = { "openid", "profile", "nextRole", "nextapi_fullaccess" }
             },
         };
 }

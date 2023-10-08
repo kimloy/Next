@@ -20,8 +20,6 @@ const Home: React.FC = () => {
   let nameDict = claims?.find((claim: { type: string; }) => claim.type === 'name') || claims?.find((claim: { type: string; }) => claim.type === 'sub');
   let username = nameDict?.value;
 
-  console.log({ claims })
-
   const [homeStore, dispatch] = useReducer(
     homeReducer,
     homeInitialStore
