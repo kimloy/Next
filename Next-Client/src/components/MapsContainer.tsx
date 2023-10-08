@@ -101,8 +101,6 @@ const MyMap: React.FC<MyMapProps> = ({ userZipCode, reloadMap }) => {
         })
     }
 
-    console.log({ playgroundList })
-
     const renderMap = () => {
         return (
             <GoogleMap

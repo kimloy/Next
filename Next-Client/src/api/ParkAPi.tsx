@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const BASE_URL = "https://localhost:7247/api/park";
+
 const config = {
     withCredentials: true, headers: {
         'X-CSRF': '1'

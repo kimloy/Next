@@ -1,4 +1,4 @@
-import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonSearchbar, IonTitle, IonToolbar, SearchbarInputEventDetail } from '@ionic/react';
+import { IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonSearchbar, IonTitle, IonToolbar, SearchbarInputEventDetail } from '@ionic/react';
 import MapsContainer from '../../components/MapsContainer';
 import { HomeContext, HomeContextProvider, HomeDispatch, HomeDispatchProvider, useHomeContext, useHomeDispatch } from "./context/HomeContext";
 import { Device } from '@capacitor/device';
@@ -85,31 +85,21 @@ const Home: React.FC = () => {
           <IonHeader>
             <IonToolbar>
               <IonTitle>Home</IonTitle>
+              <IonButtons slot="end">
+                <IonButton
+                  fill="solid"
+                  href="https://localhost:7247/bff/login?returnUrl=http://localhost:8100/home"
+                >
+                  Login
+                </IonButton>
+              </IonButtons>
             </IonToolbar>
           </IonHeader>
           <IonContent fullscreen>
-            <IonHeader collapse="condense">
-              <IonToolbar>
-                {/* <IonTitle size="large">Tab 1</IonTitle> */}
-                <IonSearchbar
-                  placeholder="Custom Placeholder"
-                  value={userZipCode}
-                  onKeyUp={(ev) => handleSearchBarEnterPress(ev)}
-                  onIonInput={(ev) => handleSearchInput(ev, "zipCode")}
-                />
-              </IonToolbar>
-            </IonHeader>
             {homeStore.operatingSystem === "windows" && (
               <IonGrid>
                 <IonRow>
                   <IonCol offset-sm="1">
-                    <a
-                      href="https://localhost:7247/bff/login?returnUrl=http://localhost:8100/home"
-                      className="inline-block px-4 py-2 text-base font-medium text-center text-white bg-blue-500 border border-transparent rounded-md hover:bg-opacity-75"
-                      onClick={handleLoginClick}
-                    >
-                      Login
-                    </a>
                     <IonSearchbar
                       class="gameSearchbar"
                       placeholder="Game"
@@ -142,10 +132,15 @@ const Home: React.FC = () => {
             )}
             {homeStore.operatingSystem === "ios" && (
               <>
+                <IonSearchbar
+                  placeholder="Custom Placeholder"
+                  value={userZipCode}
+                  onKeyUp={(ev) => handleSearchBarEnterPress(ev)}
+                  onIonInput={(ev) => handleSearchInput(ev, "zipCode")}
+                />
                 {renderMap && <MapsContainer userZipCode={userZipCode} reloadMap={reloadMap} />}
                 {homeStore.playgroundList.length > 0 && <ParksList />}
               </>
-
             )}
           </IonContent>
         </IonPage>
