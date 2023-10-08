@@ -1,6 +1,11 @@
 import axios from 'axios';
 
 const BASE_URL = "https://localhost:7247/api/park";
+const config = {
+    withCredentials: true, headers: {
+        'X-CSRF': '1'
+    }
+}
 
 // export const getDocInfo = async (setGameInfo: React.Dispatch<any>) => {
 //     await axios.get(`https://localhost:7151/api/park/getDocInfo`)
@@ -14,39 +19,27 @@ const BASE_URL = "https://localhost:7247/api/park";
 // }
 
 export const getDocInfo = async () => {
-    const response = await axios.get(`https://localhost:7247/api/park/getDocInfo`, {
-        withCredentials: true, headers: {
-            'X-CSRF': '1'
-        }
-    });
+    const response = await axios.get(`${BASE_URL}/getDocInfo`, config);
     return response.data;
 }
 
 export const getGames = async (place_ID: string) => {
-    const response = await axios.get(`https://localhost:7247/api/park/getgames/${place_ID}`, {
-        withCredentials: true, headers: {
-            'X-CSRF': '1'
-        }
-    })
+    const response = await axios.get(`${BASE_URL}/getgames/${place_ID}`, config)
     return response.data;
 }
 
 export const createNewGame = async (body: any) => {
-    const response = await axios.post(`https://localhost:7247/api/park/CreateNewGame`, { placeDetail: body.park, game: body.game }, {
-        withCredentials: true, headers: {
-            'X-CSRF': '1'
-        }
-    });
+    const response = await axios.post(
+        `${BASE_URL}/CreateNewGame`,
+        { placeDetail: body.park, game: body.game },
+        config);
+
     return response.data;
 }
 
 export const startGame = async (body: any) => {
     const game = body.game
-    const response = await axios.post(`https://localhost:7247/api/park/startGame`, game, {
-        withCredentials: true, headers: {
-            'X-CSRF': '1'
-        }
-    });
+    const response = await axios.post(`${BASE_URL}/startGame`, game, config);
     return response.data;
 }
 
