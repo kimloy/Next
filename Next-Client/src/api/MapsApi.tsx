@@ -14,7 +14,11 @@ export const getNearbyParks = async (lat: number, lng: number, setPlaygroundList
 }
 
 export const getParkDetails = async (place_id: string, setParkDetail: React.Dispatch<any>) => {
-    await axios.get(`https://localhost:7247/api/places/detail/${place_id}`).then((resp) => {
+    await axios.get(`https://localhost:7247/api/places/detail/${place_id}`, {
+        withCredentials: true, headers: {
+            'X-CSRF': '1'
+        }
+    }).then((resp) => {
         if (resp.data.result) {
             setParkDetail(resp.data);
         }
