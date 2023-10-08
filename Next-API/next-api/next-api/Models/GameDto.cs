@@ -1,4 +1,6 @@
-﻿namespace next_api.Models
+﻿using next_api.Entities;
+
+namespace next_api.Models
 {
     public class GameDto
     {
@@ -7,6 +9,8 @@
         public  string? Place_id { get; set; }
 
         public  string? Player_ID { get; set; }
+
+        public ICollection<PlayerDto>? Players { get; set; } = new List<PlayerDto>();
 
         public  string? Sport_Name { get; set; }
 

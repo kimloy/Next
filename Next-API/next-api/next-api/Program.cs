@@ -1,3 +1,10 @@
+using Duende.Bff;
+using Duende.Bff.Yarp;
+using IdentityModel;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.EntityFrameworkCore;
 using next_api.DbContexts;
 using next_api.Servies;
@@ -13,8 +20,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-
 builder.Services.AddScoped<IPlaceService, PlacesService>();
 builder.Services.AddScoped<IParkService, ParkService>();
 builder.Services.AddScoped<INextApiRepository, NextApiRepository>();
@@ -26,6 +31,26 @@ builder.Services.AddDbContext<NextApiContext>(
         builder.Configuration["ConnectionStrings:NextApiDbConnectionString"]));
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddAuthentication("token")
+               .AddJwtBearer("token", options =>
+               {
+                   options.Authority = "https://localhost:5001/";
+                   options.Audience = "nextapi";
+
+                   options.MapInboundClaims = false;
+               });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("fullaccess", p =>
+        p.RequireClaim(JwtClaimTypes.Scope, "nextapi_fullaccess"));
+
+    //o.DefaultPolicy = new AuthorizationPolicyBuilder()
+    //    .RequireClaim(JwtClaimTypes.Role, "contributor")
+    //    .RequireAuthenticatedUser()
+    //    .Build();
+});
 
 var app = builder.Build();
 
@@ -46,8 +71,19 @@ builder.WithOrigins("http://localhost:8100")
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
+
+app.UseAuthentication();
+app.UseBff();
 app.UseAuthorization();
 
 app.MapControllers();
+
+    // login, logout, user, backchannel logout...
+app.MapBffManagementEndpoints();
+    // reverse proxy configuration
+app.MapRemoteBffApiEndpoint("/api", "https://localhost:8100").AllowAnonymous();
+
+
 
 app.Run();

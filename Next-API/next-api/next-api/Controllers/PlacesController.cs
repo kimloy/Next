@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using next_api.Servies;
 
 namespace next_api.Controllers
@@ -8,6 +9,8 @@ namespace next_api.Controllers
     [Route("api/places")]
     public class PlacesController:ControllerBase
     {
+        private static readonly HttpClient Client = new HttpClient();
+
         private IPlaceService _placesService;
 
         public PlacesController(IPlaceService placesService) 
@@ -18,6 +21,7 @@ namespace next_api.Controllers
         [HttpGet("geocoding/{zipcode}")]
         public ActionResult GetGeolocation(string zipcode)
         {
+
             var result = _placesService.GetGeolocationAsync(zipcode).ConfigureAwait(false).GetAwaiter().GetResult(); ;
 
             if(result == null)

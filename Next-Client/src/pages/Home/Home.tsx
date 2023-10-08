@@ -6,17 +6,32 @@ import './Home.css';
 import { useEffect, useReducer, useState } from 'react';
 import ParksList from '../../components/ParksList';
 import { homeInitialStore, homeReducer } from './context/homeReducer';
+import useClaims from '../../hooks/useClaims';
 
 const Home: React.FC = () => {
   const [gameSearch, setGameSearch] = useState<string>("");
   const [userZipCode, setUserZipCode] = useState<string>("");
   const [renderMap, setRenderMap] = useState<boolean>(false);
   const [reloadMap, setReloadMap] = useState<boolean>(false);
+  const [enable, setEnable] = useState<boolean>(false);
+
+  const { data: claims, isLoading } = useClaims(enable);
+  let logoutUrl = claims?.find((claim: { type: string; }) => claim.type === 'bff:logout_url')
+  let nameDict = claims?.find((claim: { type: string; }) => claim.type === 'name') || claims?.find((claim: { type: string; }) => claim.type === 'sub');
+  let username = nameDict?.value;
+
+  console.log({ claims })
 
   const [homeStore, dispatch] = useReducer(
     homeReducer,
     homeInitialStore
   );
+
+  useEffect(() => {
+    if (isLoading === false) {
+      console.log({ claims });
+    }
+  }, [isLoading])
 
   const handleSearchInput = (ev: Event, searchBar: string) => {
     let query = '';
@@ -56,6 +71,11 @@ const Home: React.FC = () => {
     logDeviceInfo()
   }, []);
 
+  const handleLoginClick = () => {
+    setEnable(true)
+
+  }
+
   // useEffect(() => {
   //   dispatch({ type: "SET_DISPATCH", value: dispatch });
   // }, [dispatch]);
@@ -85,6 +105,13 @@ const Home: React.FC = () => {
               <IonGrid>
                 <IonRow>
                   <IonCol offset-sm="1">
+                    <a
+                      href="https://localhost:7247/bff/login?returnUrl=http://localhost:8100/home"
+                      className="inline-block px-4 py-2 text-base font-medium text-center text-white bg-blue-500 border border-transparent rounded-md hover:bg-opacity-75"
+                      onClick={handleLoginClick}
+                    >
+                      Login
+                    </a>
                     <IonSearchbar
                       class="gameSearchbar"
                       placeholder="Game"

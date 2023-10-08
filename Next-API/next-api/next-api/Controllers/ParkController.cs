@@ -59,7 +59,6 @@ namespace next_api.Controllers
             return Ok(gameDto);
         }
 
-        [IgnoreAntiforgeryToken]
         [HttpPost("CreateNewGame")]
         public async Task<ActionResult> CreateNewGame([FromBody] CreateNewGameDto createNewGame)
         {

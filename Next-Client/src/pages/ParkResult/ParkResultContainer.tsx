@@ -122,6 +122,7 @@ const ParkResultContainer: React.FC = () => {
                     <IonCardSubtitle>{game.sport_Name}</IonCardSubtitle>
                 </IonCardHeader>
                 <IonCardContent>
+                    {`Creator: ${game.game_Master}`}<br />
                     {`Players: ${game.players?.length}/${game.number_Of_Players}`}
                 </IonCardContent>
                 <IonButton fill="clear" color="success" onClick={() => onStartClick(game)}>Start Game</IonButton>

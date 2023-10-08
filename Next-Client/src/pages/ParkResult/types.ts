@@ -8,6 +8,7 @@ export interface Game {
     DateTime: string,
     active: boolean,
     players?: [],
+    game_Master?: string,
 }
 
 export interface GameDoc {
